@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thai Lottery Predictor · สลากกินแบ่งรัฐบาล</title>
+  <meta name="description" content="ระบบวิเคราะห์สถิติและทำนายเลขเด็ดสลากกินแบ่งรัฐบาลไทย ด้วย AI" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== TOP NAV ===== -->
+  <header class="topnav">
+    <div class="topnav-brand">
+      <span class="topnav-icon">🎟</span>
+      <div>
+        <div class="topnav-title">สลากกินแบ่งรัฐบาล</div>
+        <div class="topnav-sub">Thai Lottery Predictor</div>
+      </div>
+    </div>
+    <button class="btn-icon" id="btn-settings" title="ตั้งค่า">
+      <i class="fas fa-cog"></i>
+    </button>
+  </header>
+
+  <!-- ===== TAB BAR ===== -->
+  <nav class="tabbar">
+    <button class="tabbar-btn active" data-tab="dashboard">
+      <i class="fas fa-home"></i><span>หน้าหลัก</span>
+    </button>
+    <button class="tabbar-btn" data-tab="history">
+      <i class="fas fa-list"></i><span>ย้อนหลัง</span>
+    </button>
+    <button class="tabbar-btn" data-tab="stats">
+      <i class="fas fa-chart-bar"></i><span>สถิติ</span>
+    </button>
+    <button class="tabbar-btn" data-tab="formula">
+      <i class="fas fa-book"></i><span>ตำรา</span>
+    </button>
+    <button class="tabbar-btn" data-tab="ai">
+      <i class="fas fa-robot"></i><span>AI ทำนาย</span>
+    </button>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <section id="tab-dashboard" class="tab-section active">
+      <div class="hero-banner">
+        <div class="hero-ornament">◆ ◆ ◆ ◆ ◆</div>
+        <div class="hero-title">งวดล่าสุด</div>
+        <div class="hero-date" id="hero-date">—</div>
+        <div class="hero-prize" id="hero-prize">— — — — — —</div>
+        <div class="hero-label">รางวัลที่ 1</div>
+        <div class="hero-ornament">◆ ◆ ◆ ◆ ◆</div>
+      </div>
+
+      <div class="section-grid three">
+        <div class="stat-card">
+          <div class="stat-label">เลขท้าย 3 ตัว (รางวัลที่ 1)</div>
+          <div class="stat-num red" id="dash-t3p1">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">เลขท้าย 3 ตัวล่าง</div>
+          <div class="stat-num blue" id="dash-b3">— / —</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">เลขท้าย 2 ตัวล่าง</div>
+          <div class="stat-num gold" id="dash-b2">—</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-clock"></i> งวดถัดไป</div>
+        <div class="countdown-row">
+          <div class="countdown-item"><span class="countdown-val" id="cd-days">—</span><span class="countdown-label">วัน</span></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-item"><span class="countdown-val" id="cd-hours">—</span><span class="countdown-label">ชั่วโมง</span></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-item"><span class="countdown-val" id="cd-mins">—</span><span class="countdown-label">นาที</span></div>
+        </div>
+        <div class="next-draw-date" id="next-draw-label">—</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-fire"></i> เลขเด็ดจากตำรา (งวดถัดไป)</div>
+        <div class="quick-pred" id="quick-pred">กำลังคำนวณ...</div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="tab-history" class="tab-section">
+      <div class="card">
+        <div class="card-title">
+          <i class="fas fa-plus-circle"></i> เพิ่มผลสลากใหม่
+          <button class="btn-sm btn-outline" id="btn-toggle-add">+ เพิ่ม</button>
+        </div>
+        <div id="add-form" class="add-form hidden">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>วันที่ (เช่น 1 ส.ค. 68)</label>
+              <input type="text" id="inp-date" placeholder="1 ก.ค. 68" />
+            </div>
+            <div class="form-group">
+              <label>รางวัลที่ 1 (6 หลัก)</label>
+              <input type="text" id="inp-p1" placeholder="835491" maxlength="6" />
+            </div>
+            <div class="form-group">
+              <label>เลขท้าย 3 ตัว ชุด 1</label>
+              <input type="text" id="inp-b3a" placeholder="732" maxlength="3" />
+            </div>
+            <div class="form-group">
+              <label>เลขท้าย 3 ตัว ชุด 2</label>
+              <input type="text" id="inp-b3b" placeholder="865" maxlength="3" />
+            </div>
+            <div class="form-group">
+              <label>เลขท้าย 2 ตัว</label>
+              <input type="text" id="inp-b2" placeholder="39" maxlength="2" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="btn-add-draw">บันทึก</button>
+            <button class="btn btn-ghost" id="btn-cancel-add">ยกเลิก</button>
+          </div>
+          <div class="form-msg" id="form-msg"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <i class="fas fa-history"></i> ผลสลากย้อนหลัง
+          <span class="badge badge-sm" id="history-count">0 งวด</span>
+          <button class="btn-sm btn-ghost ml-auto" id="btn-export">
+            <i class="fas fa-download"></i> Export
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>งวด</th>
+                <th>รางวัลที่ 1</th>
+                <th>ท้าย 3 (ร.1)</th>
+                <th>ท้าย 3 ล่าง</th>
+                <th>ท้าย 2</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+        <p class="data-note"><i class="fas fa-info-circle"></i> ข้อมูลบันทึกในเครื่องของคุณ ตรวจสอบผลจริงที่ <a href="https://www.glo.or.th" target="_blank" rel="noopener">glo.or.th</a></p>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="tab-stats" class="tab-section">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-chart-bar"></i> ความถี่เลขท้าย 2 ตัว (top 20)</div>
+        <div class="chart-wrap">
+          <canvas id="chart-freq2"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fas fa-chart-pie"></i> ความถี่เลขท้าย 3 ตัว (top 15)</div>
+        <div class="chart-wrap">
+          <canvas id="chart-freq3"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fas fa-thermometer-half"></i> เลขร้อน — เลขเย็น (ท้าย 3 ตัว)</div>
+        <div class="hc-grid" id="hot-cold-grid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fas fa-sigma"></i> วิเคราะห์ผลรวมตัวเลข</div>
+        <div id="sum-analysis"></div>
+      </div>
+    </section>
+
+    <!-- FORMULA -->
+    <section id="tab-formula" class="tab-section">
+      <div class="formula-pills">
+        <button class="pill active" data-formula="all">ทั้งหมด</button>
+        <button class="pill" data-formula="avg">เฉลี่ย</button>
+        <button class="pill" data-formula="reverse">กลับ</button>
+        <button class="pill" data-formula="line">เส้น</button>
+        <button class="pill" data-formula="diff">ต่าง</button>
+        <button class="pill" data-formula="hot">ร้อน</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-book-open"></i> ตำราเลขท้าย 3 ตัว</div>
+        <div id="formula-3-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fas fa-book"></i> ตำราเลขท้าย 2 ตัว</div>
+        <div id="formula-2-list"></div>
+      </div>
+      <div class="card formula-legend">
+        <div class="card-title"><i class="fas fa-info-circle"></i> คำอธิบายตำรา</div>
+        <div class="legend-list">
+          <div class="legend-item"><span class="legend-num">1</span><div><strong>เฉลี่ย 3 งวด</strong> — นำผลสามงวดล่าสุดบวกกันหารสาม</div></div>
+          <div class="legend-item"><span class="legend-num">2</span><div><strong>กลับหลัก</strong> — สลับลำดับตัวเลขจากหลังไปหน้า</div></div>
+          <div class="legend-item"><span class="legend-num">3</span><div><strong>เลขเส้น</strong> — บวก 111 (หรือ 11) จากงวดล่าสุด</div></div>
+          <div class="legend-item"><span class="legend-num">4</span><div><strong>ผลต่าง</strong> — ผลต่างสัมบูรณ์ระหว่างสองงวด</div></div>
+          <div class="legend-item"><span class="legend-num">5</span><div><strong>เลขร้อน</strong> — เลขที่ออกบ่อยที่สุดในสถิติ</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section id="tab-ai" class="tab-section">
+      <div class="ai-header">
+        <div class="ai-logo">🤖</div>
+        <h2>AI วิเคราะห์และทำนาย</h2>
+        <p>Claude AI จะวิเคราะห์สถิติ รูปแบบ และตำรา เพื่อให้ตัวเลขที่น่าจับตาสำหรับงวดถัดไป</p>
+      </div>
+
+      <div class="card" id="api-key-card">
+        <div class="card-title"><i class="fas fa-key"></i> Anthropic API Key</div>
+        <p class="hint-text">ใส่ API Key เพื่อใช้งาน AI (เก็บในเครื่องของคุณ ไม่ส่งไปที่อื่น)</p>
+        <div class="key-row">
+          <input type="password" id="inp-apikey" placeholder="sk-ant-..." class="key-input" />
+          <button class="btn btn-primary" id="btn-save-key">บันทึก</button>
+        </div>
+        <div class="key-status" id="key-status"></div>
+        <p class="hint-text mt-8"><a href="https://console.anthropic.com" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> รับ API Key จาก Anthropic Console</a></p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-sliders-h"></i> ตัวเลือกการวิเคราะห์</div>
+        <div class="options-grid">
+          <label class="checkbox-label"><input type="checkbox" id="opt-stat" checked /> รวมข้อมูลสถิติ</label>
+          <label class="checkbox-label"><input type="checkbox" id="opt-formula" checked /> รวมผลตำรา</label>
+          <label class="checkbox-label"><input type="checkbox" id="opt-pattern" checked /> วิเคราะห์รูปแบบ</label>
+          <label class="checkbox-label"><input type="checkbox" id="opt-hot" checked /> เลขร้อน-เลขเย็น</label>
+        </div>
+        <button class="btn btn-ai" id="btn-analyze">
+          <i class="fas fa-magic"></i> วิเคราะห์และทำนายงวดถัดไป
+        </button>
+      </div>
+
+      <div id="ai-result-area"></div>
+      <p class="disclaimer"><i class="fas fa-exclamation-triangle"></i> ผลการทำนายใช้เพื่อความบันเทิงและการศึกษาเท่านั้น สลากกินแบ่งเป็นการสุ่มตามกฎหมาย ไม่มีวิธีใดการันตีผลจริง กรุณาซื้อสลากในปริมาณที่เหมาะสม</p>
+    </section>
+
+  </main>
+
+  <!-- ===== SETTINGS MODAL ===== -->
+  <div class="modal-overlay" id="modal-settings" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fas fa-cog"></i> ตั้งค่า</h3>
+        <button class="btn-icon" id="btn-close-settings"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label class="setting-label">ธีม</label>
+          <div class="theme-btns">
+            <button class="btn btn-outline" id="btn-theme-light">☀️ สว่าง</button>
+            <button class="btn btn-outline" id="btn-theme-dark">🌙 มืด</button>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">จัดการข้อมูล</label>
+          <div class="setting-row">
+            <button class="btn btn-outline" id="btn-import">
+              <i class="fas fa-upload"></i> Import JSON
+            </button>
+            <button class="btn btn-outline" id="btn-export-modal">
+              <i class="fas fa-download"></i> Export JSON
+            </button>
+            <button class="btn btn-danger" id="btn-reset">
+              <i class="fas fa-trash"></i> ลบข้อมูลทั้งหมด
+            </button>
+          </div>
+          <input type="file" id="inp-import" accept=".json" style="display:none" />
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">เกี่ยวกับ</label>
+          <p class="setting-note">Thai Lottery Predictor v1.0.0<br>สร้างด้วย Vanilla JS + Claude AI</p>
+          <p class="setting-note"><a href="https://github.com" target="_blank">GitHub Repository</a> · <a href="https://www.glo.or.th" target="_blank">glo.or.th (ผลจริง)</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/analysis.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
